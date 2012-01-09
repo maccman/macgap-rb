@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Alex MacCaw"]
   s.email       = ["info@eribium.org"]
   s.homepage    = "http://github.com/maccman/macgap-rb"
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Generate MacGap applications}
+  s.description = %q{Command line utility for generating MacGap applications}
 
   s.rubyforge_project = "macgap"
 
