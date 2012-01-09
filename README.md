@@ -6,6 +6,8 @@ For more information on MacGap, please see [its repository](http://github.com/ma
 
 # Usage
 
+    gem install macgap
+    
     macgap macgap [options] DIR
     
 For example:
