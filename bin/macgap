@@ -1,0 +1,77 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "pathname"
+require "fileutils"
+
+options = {}
+
+optparse = OptionParser.new do|opts|
+  opts.banner = "Usage: macgap [options] DIR"
+
+  options[:name] = "MacGap"
+  opts.on( "-n", "--name NAME", "Application name" ) do |name|
+    options[:name] = name
+  end
+
+  options[:output] = Dir.pwd
+  opts.on( "-o", "--output DIR", "Output application to DIR" ) do |dir|
+    options[:output] = dir
+  end
+
+  opts.on( "-h", "--help", "Display this screen" ) do
+    puts opts
+    exit
+  end
+end
+
+optparse.parse!
+
+public_dir = ARGV[0]
+
+unless public_dir
+  puts optparse
+  exit
+end
+
+# Setup directories
+public_dir = Pathname.new(public_dir).expand_path
+build_dir  = Pathname.new(options[:output]).join(options[:name] + ".app")
+lib_dir    = Pathname.new(File.join(__FILE__, *%w{.. ..})).expand_path
+
+FileUtils.rm_rf build_dir
+build_dir.parent.mkpath
+
+# Copy over MacGap
+FileUtils.cp_r(
+  lib_dir.join("assets", "MacGap.app"), 
+  build_dir
+)
+
+FileUtils.cd build_dir.join("Contents") do
+  build_dir = Pathname.new(Dir.pwd)
+  
+  # Copy over public dir
+  build_public_dir = build_dir.join("Resources", "public")
+  FileUtils.rm_rf build_public_dir
+  FileUtils.cp_r(public_dir, build_public_dir)
+
+  # Copy over icon
+  icon_path = public_dir.join("application.icns")
+  if icon_path.exist?
+    FileUtils.cp_r(
+      icon_path,
+      build_dir.join("Resources", "application.icns")
+    )
+  end
+
+  # Rename MacGap to specified name
+  exe_path = build_dir.join("MacOS", "MacGap")
+  renamed_exe_path = build_dir.join("MacOS", options[:name])
+  exe_path.rename(renamed_exe_path)
+  renamed_exe_path.chmod(0755)
+  
+  plist = build_dir.join("Info.plist").read
+  plist.gsub!("MacGap", options[:name])
+  build_dir.join("Info.plist").open("w+") {|io| io.write plist }
+end

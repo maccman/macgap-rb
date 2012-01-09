@@ -1,0 +1,1 @@
+macgap ./public/ --output ./build/ --name MyApp
