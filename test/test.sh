@@ -1,1 +1,0 @@
-macgap ./public/ --name MyApp
