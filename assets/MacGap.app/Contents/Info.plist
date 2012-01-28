@@ -31,15 +31,15 @@
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
-	<string>11A481</string>
+	<string>11C74</string>
 	<key>DTSDKName</key>
-	<string>macosx10.7</string>
+	<string></string>
 	<key>DTXcode</key>
 	<string>0420</string>
 	<key>DTXcodeBuild</key>
 	<string>4D5163b</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.7</string>
+	<string>10.6</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
