@@ -26,3 +26,7 @@ Or a more advanced example:
     macgap build --name MyApp --output ./build ./public
 
 The directory (`DIR`) you specify should contain a file called `index.html` which will be loaded when the application starts.
+
+# Icon
+
+If the your application's root directory contains a file called `application.png`, that'll be used as the application's icon. 

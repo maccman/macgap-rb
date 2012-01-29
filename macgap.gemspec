@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "macgap"
-  s.version     = "0.0.6"
+  s.version     = "0.0.7"
   s.authors     = ["Alex MacCaw"]
   s.email       = ["info@eribium.org"]
   s.homepage    = "http://github.com/maccman/macgap-rb"
