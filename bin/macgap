@@ -74,9 +74,15 @@ FileUtils.cd build_dir.join("Contents") do
   build_public_dir = build_dir.join("Resources", "public")
   FileUtils.rm_rf build_public_dir
   FileUtils.cp_r(public_dir, build_public_dir)
+  
+  png_icon_path = public_dir.join("application.png")
+  icon_path     = public_dir.join("application.icns")
+  
+  if png_icon_path.exist?
+    `sips -s format icns #{png_icon_path} --out #{icon_path}`
+  end
 
   # Copy over icon
-  icon_path = public_dir.join("application.icns")
   if icon_path.exist?
     FileUtils.cp_r(
       icon_path,
