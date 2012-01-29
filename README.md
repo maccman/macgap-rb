@@ -8,12 +8,21 @@ For more information on MacGap, please see [its repository](http://github.com/ma
 
     gem install macgap
     
-    macgap macgap [options] DIR
+    # macgap new DIR
+    # macgap build DIR
     
-For example:
+For example, to create a new MacGap app use the `new` command:
 
-    macgap --name MyApp --output ./build ./public
+    macgap new MyApp
+    
+To build a MacGap app use the `build` command, specifying the app's directory.
+    
+    macgap build MyApp
+    
+# Advanced
+    
+Or a more advanced example:
 
-This will build `MyApp.app` in the specified `build` dir. 
+    macgap build --name MyApp --output ./build ./public
 
 The directory (`DIR`) you specify should contain a file called `index.html` which will be loaded when the application starts.

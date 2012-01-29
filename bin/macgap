@@ -7,9 +7,11 @@ require "fileutils"
 options = {}
 
 optparse = OptionParser.new do|opts|
-  opts.banner = "Usage: macgap [options] DIR"
+  opts.banner = "Usage: macgag COMMAND [OPTIONS] DIR"
+  opts.banner += "\n\tAvailable commands are:"
+  opts.banner += "\n\t build - build application in DIR"
+  opts.banner += "\n\t new - new application in DIR"
 
-  options[:name] = "MacGap"
   opts.on( "-n", "--name NAME", "Application name" ) do |name|
     options[:name] = name
   end
@@ -27,17 +29,34 @@ end
 
 optparse.parse!
 
-public_dir = ARGV[0]
+command    = ARGV[0]
+public_dir = ARGV[1]
 
-unless public_dir
+unless command && public_dir
   puts optparse
   exit
 end
 
 # Setup directories
-public_dir = Pathname.new(public_dir).expand_path
-build_dir  = Pathname.new(options[:output]).join(options[:name] + ".app")
-lib_dir    = Pathname.new(File.join(__FILE__, *%w{.. ..})).expand_path
+public_dir       = Pathname.new(public_dir).expand_path
+options[:name] ||= public_dir.basename.to_s
+build_dir        = Pathname.new(options[:output]).join(options[:name] + ".app")
+lib_dir          = Pathname.new(File.join(__FILE__, *%w{.. ..})).expand_path
+
+case command
+when "build"
+when "new"
+  public_dir.mkpath
+  FileUtils.cp_r(
+    lib_dir.join("assets", "index.html"),
+    public_dir
+  )
+  puts "Created application in #{public_dir}"
+  exit
+else
+  puts optparse
+  exit
+end
 
 FileUtils.rm_rf build_dir
 build_dir.parent.mkpath
@@ -75,3 +94,5 @@ FileUtils.cd build_dir.join("Contents") do
   plist.gsub!("MacGap", options[:name])
   build_dir.join("Info.plist").open("w+") {|io| io.write plist }
 end
+
+puts "Built application in #{build_dir.parent}"
