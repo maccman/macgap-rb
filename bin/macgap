@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "optparse"
+require "plist"
 require "pathname"
 require "fileutils"
 
@@ -19,6 +20,11 @@ optparse = OptionParser.new do|opts|
   options[:output] = Dir.pwd
   opts.on( "-o", "--output DIR", "Output application to DIR" ) do |dir|
     options[:output] = dir
+  end
+
+  options[:version] = '1.0'
+  opts.on( "-v", "--version VER", "Generated application version" ) do |ver|
+    options[:version] = ver
   end
 
   opts.on( "-h", "--help", "Display this screen" ) do
@@ -96,9 +102,14 @@ FileUtils.cd build_dir.join("Contents") do
   exe_path.rename(renamed_exe_path)
   renamed_exe_path.chmod(0755)
   
-  plist = build_dir.join("Info.plist").read
-  plist.gsub!("MacGap", options[:name])
-  build_dir.join("Info.plist").open("w+") {|io| io.write plist }
+  plist = Plist::parse_xml(build_dir.join("Info.plist"))
+  
+  %W(CFBundleExecutable CFBundleIdentifier CFBundleName).each do |key|
+    plist[key].gsub!("MacGap", options[:name])
+  end
+  plist['CFBundleShortVersionString'] = options[:version]
+  
+  build_dir.join("Info.plist").open("w+") {|io| io.write plist.to_plist }
 end
 
 puts "Built application in #{build_dir.parent}"
