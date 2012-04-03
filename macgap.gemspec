@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.description = %q{Command line utility for generating MacGap applications}
 
   s.rubyforge_project = "macgap"
+  
+  s.add_runtime_dependency "plist" 
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
