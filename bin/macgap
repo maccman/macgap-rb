@@ -7,7 +7,7 @@ require "fileutils"
 options = {}
 
 optparse = OptionParser.new do|opts|
-  opts.banner = "Usage: macgag COMMAND [OPTIONS] DIR"
+  opts.banner = "Usage: macgap COMMAND [OPTIONS] DIR"
   opts.banner += "\n\tAvailable commands are:"
   opts.banner += "\n\t build - build application in DIR"
   opts.banner += "\n\t new - new application in DIR"
