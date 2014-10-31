@@ -84,7 +84,11 @@ FileUtils.cd build_dir.join("Contents") do
   png_icon_path = public_dir.join("application.png")
   icon_path     = public_dir.join("application.icns")
   
+  # Replace automatically generated application.icns with user application.png
   if png_icon_path.exist?
+    if icon_path.exist?
+      FileUtils.rm(icon_path)
+    end
     `sips -s format icns #{png_icon_path} --out #{icon_path}`
   end
 
